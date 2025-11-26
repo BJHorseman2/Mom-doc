@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MomDoc — Organize Your Parents' Important Documents in One Secure Place</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --primary-light: #6ee7b7;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg: #ffffff;
+            --bg-soft: #f0fdf4;
+            --bg-warm: #fefce8;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --medical: #ef4444;
+            --financial: #3b82f6;
+            --afterlife: #8b5cf6;
+            --gradient: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--bg-soft);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 12px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(5, 150, 105, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 560px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(5, 150, 105, 0.1);
+            border: 1px solid rgba(5, 150, 105, 0.2);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .trust-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .trust-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            font-size: 0.7rem;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .app-preview {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+            transition: transform 0.5s;
+        }
+
+        .app-preview:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .app-header h3 {
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+
+        .doc-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .doc-category {
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .doc-category.medical {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--medical);
+        }
+
+        .doc-category.financial {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--financial);
+        }
+
+        .doc-category.afterlife {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--afterlife);
+        }
+
+        .doc-category-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-category-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-category-count {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 0.25rem;
+        }
+
+        .recent-docs {
+            background: var(--bg-soft);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .recent-docs h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .doc-item:last-child {
+            border-bottom: none;
+        }
+
+        .doc-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .doc-icon.pdf { background: #fee2e2; color: #dc2626; }
+        .doc-icon.photo { background: #dbeafe; color: #2563eb; }
+        .doc-icon.sheet { background: #d1fae5; color: #059669; }
+
+        .doc-info {
+            flex: 1;
+        }
+
+        .doc-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .doc-meta {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* Pain Points Section */
+        .pain-points {
+            padding: 6rem 2rem;
+            background: var(--bg-warm);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pain-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .pain-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .pain-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .pain-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 20px 40px rgba(5, 150, 105, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Upload Methods */
+        .upload-methods {
+            padding: 6rem 2rem;
+            background: var(--secondary);
+            color: white;
+        }
+
+        .upload-methods .section-header h2 {
+            color: white;
+        }
+
+        .upload-methods .section-header p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+        }
+
+        .upload-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .upload-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .upload-icon {
+            width: 72px;
+            height: 72px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+
+        .upload-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Document Types */
+        .doc-types {
+            padding: 6rem 2rem;
+            background: var(--bg-soft);
+        }
+
+        .doc-types-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .doc-type-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .doc-type-card.medical {
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .doc-type-card.medical:hover {
+            border-color: var(--medical);
+            box-shadow: 0 20px 40px rgba(239, 68, 68, 0.1);
+        }
+
+        .doc-type-card.financial {
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .doc-type-card.financial:hover {
+            border-color: var(--financial);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+        }
+
+        .doc-type-card.afterlife {
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .doc-type-card.afterlife:hover {
+            border-color: var(--afterlife);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.1);
+        }
+
+        .doc-type-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+        }
+
+        .doc-type-card.medical .doc-type-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--medical);
+        }
+
+        .doc-type-card.financial .doc-type-icon {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--financial);
+        }
+
+        .doc-type-card.afterlife .doc-type-icon {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--afterlife);
+        }
+
+        .doc-type-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .doc-type-list {
+            list-style: none;
+        }
+
+        .doc-type-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text-light);
+        }
+
+        .doc-type-list li::before {
+            content: '✓';
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 2rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 12.5%;
+            right: 12.5%;
+            height: 2px;
+            background: var(--border);
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 6rem 2rem;
+            background: var(--bg-soft);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .testimonial-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .testimonial-info h4 {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .testimonial-info p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .stars {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        /* Security Section */
+        .security {
+            padding: 6rem 2rem;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .security-content h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .security-content p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .security-features {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .security-feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-soft);
+            border-radius: 12px;
+        }
+
+        .security-feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .security-feature h4 {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .security-feature p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .security-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .security-badge {
+            width: 280px;
+            height: 280px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(5, 150, 105, 0.3);
+        }
+
+        .security-badge-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .security-badge h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .security-badge p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 6rem 2rem;
+            background: var(--bg-soft);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Best Value';
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .pricing-card .description {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text);
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 6rem 2rem;
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-answer p {
+            padding-bottom: 1.5rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 2rem;
+            background: var(--gradient);
+            text-align: center;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: none;
+        }
+
+        .cta .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem 2rem;
+            background: var(--secondary);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand .logo {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .footer-column h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column a {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            padding: 0.5rem 0;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .trust-indicators {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .doc-types-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .steps::before {
+                display: none;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .security-features {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .hero-cta .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">📋</div>
+                MomDoc
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+                <a href="#" class="btn btn-primary">Get Started Free</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="badge">Trusted by 5,000+ Families</div>
+                <h1>All Your Parents' <span>Important Documents</span> in One Secure Place</h1>
+                <p class="hero-description">Stop searching through filing cabinets and shoeboxes. MomDoc helps you organize medical records, financial documents, and end-of-life wishes — so you're prepared when it matters most.</p>
+                <div class="hero-cta">
+                    <a href="#" class="btn btn-primary btn-large">Start Organizing Free →</a>
+                    <a href="#" class="btn btn-secondary btn-large">See How It Works</a>
+                </div>
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <div class="trust-icon">🔒</div>
+                        <span>Bank-level encryption</span>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">✓</div>
+                        <span>HIPAA compliant</span>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">👨‍👩‍👧</div>
+                        <span>Family sharing</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="app-preview">
+                    <div class="app-header">
+                        <h3>Mom's Documents</h3>
+                        <span style="color: var(--primary); font-weight: 600;">+ Add New</span>
+                    </div>
+                    <div class="doc-categories">
+                        <div class="doc-category medical">
+                            <div class="doc-category-icon">🏥</div>
+                            <div class="doc-category-label">Medical</div>
+                            <div class="doc-category-count">24</div>
+                        </div>
+                        <div class="doc-category financial">
+                            <div class="doc-category-icon">💰</div>
+                            <div class="doc-category-label">Financial</div>
+                            <div class="doc-category-count">18</div>
+                        </div>
+                        <div class="doc-category afterlife">
+                            <div class="doc-category-icon">📜</div>
+                            <div class="doc-category-label">Legacy</div>
+                            <div class="doc-category-count">7</div>
+                        </div>
+                    </div>
+                    <div class="recent-docs">
+                        <h4>Recently Added</h4>
+                        <div class="doc-item">
+                            <div class="doc-icon pdf">PDF</div>
+                            <div class="doc-info">
+                                <div class="doc-name">Medicare Card.pdf</div>
+                                <div class="doc-meta">Medical • Added today</div>
+                            </div>
+                        </div>
+                        <div class="doc-item">
+                            <div class="doc-icon photo">📷</div>
+                            <div class="doc-info">
+                                <div class="doc-name">Insurance Policy Photo</div>
+                                <div class="doc-meta">Financial • Added yesterday</div>
+                            </div>
+                        </div>
+                        <div class="doc-item">
+                            <div class="doc-icon sheet">XLS</div>
+                            <div class="doc-info">
+                                <div class="doc-name">Monthly Medications.xlsx</div>
+                                <div class="doc-meta">Medical • Added 3 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points Section -->
+    <section class="pain-points">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>We've Been There Too</h2>
+                <p>Caring for aging parents is hard enough without the paperwork chaos.</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <div class="pain-icon">😰</div>
+                    <h3>"Where did Mom put her Medicare card?"</h3>
+                    <p>Scrambling through drawers during a medical emergency is stressful and dangerous. Important documents should be at your fingertips.</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">🤯</div>
+                    <h3>"I don't even know what accounts she has"</h3>
+                    <p>When the time comes, you shouldn't have to play detective. Get a clear picture of all financial accounts and policies now.</p>
+                </div>
+                <div class="pain-card">
+                    <div class="pain-icon">💔</div>
+                    <h3>"What would Mom have wanted?"</h3>
+                    <p>End-of-life wishes shouldn't be a guessing game. Document and share their preferences before it's too late.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Everything You Need to Stay Organized</h2>
+                <p>Simple, secure, and designed for real families navigating eldercare.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📸</div>
+                    <h3>Snap & Upload Photos</h3>
+                    <p>Take a photo of any document with your phone. Our smart scanner automatically enhances and organizes it.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>PDF & File Upload</h3>
+                    <p>Drag and drop PDFs, spreadsheets, or any file type. We support all major formats and keep them searchable.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Copy & Paste Text</h3>
+                    <p>Quickly save account numbers, passwords, or notes by pasting text directly. No file needed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏷️</div>
+                    <h3>Smart Organization</h3>
+                    <p>Documents are automatically categorized into Medical, Financial, and Legacy sections. Add custom tags for easy finding.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                    <h3>Family Sharing</h3>
+                    <p>Invite siblings, spouses, or trusted family members. Control who sees what with granular permissions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Expiration Reminders</h3>
+                    <p>Never miss a renewal. Get notified before insurance policies, prescriptions, or IDs expire.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Methods Section -->
+    <section class="upload-methods">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Add Documents Your Way</h2>
+                <p>Multiple ways to capture and store important information — whatever works best for you.</p>
+            </div>
+            <div class="upload-grid">
+                <div class="upload-card">
+                    <div class="upload-icon">📷</div>
+                    <h3>Photo Capture</h3>
+                    <p>Snap a photo of any document with your phone's camera</p>
+                </div>
+                <div class="upload-card">
+                    <div class="upload-icon">📄</div>
+                    <h3>PDF Upload</h3>
+                    <p>Upload existing PDFs from your computer or cloud storage</p>
+                </div>
+                <div class="upload-card">
+                    <div class="upload-icon">📊</div>
+                    <h3>Spreadsheets</h3>
+                    <p>Import Excel or Google Sheets with medication lists or account info</p>
+                </div>
+                <div class="upload-card">
+                    <div class="upload-icon">📝</div>
+                    <h3>Copy & Paste</h3>
+                    <p>Paste text, notes, or account details directly into entries</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Document Types Section -->
+    <section class="doc-types">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Organize Every Important Document</h2>
+                <p>Three categories to cover everything your family needs.</p>
+            </div>
+            <div class="doc-types-grid">
+                <div class="doc-type-card medical">
+                    <div class="doc-type-icon">🏥</div>
+                    <h3>Medical Records</h3>
+                    <ul class="doc-type-list">
+                        <li>Insurance cards & policies</li>
+                        <li>Medicare/Medicaid info</li>
+                        <li>Medication lists & schedules</li>
+                        <li>Doctor contact information</li>
+                        <li>Medical history & records</li>
+                        <li>Vaccination records</li>
+                        <li>Power of Attorney (Healthcare)</li>
+                        <li>Living will / DNR orders</li>
+                    </ul>
+                </div>
+                <div class="doc-type-card financial">
+                    <div class="doc-type-icon">💰</div>
+                    <h3>Financial Documents</h3>
+                    <ul class="doc-type-list">
+                        <li>Bank account information</li>
+                        <li>Investment & retirement accounts</li>
+                        <li>Life insurance policies</li>
+                        <li>Property deeds & titles</li>
+                        <li>Social Security information</li>
+                        <li>Pension documents</li>
+                        <li>Tax returns</li>
+                        <li>Power of Attorney (Financial)</li>
+                    </ul>
+                </div>
+                <div class="doc-type-card afterlife">
+                    <div class="doc-type-icon">📜</div>
+                    <h3>Legacy & End-of-Life</h3>
+                    <ul class="doc-type-list">
+                        <li>Last will & testament</li>
+                        <li>Trust documents</li>
+                        <li>Funeral preferences</li>
+                        <li>Cemetery/burial arrangements</li>
+                        <li>Obituary notes</li>
+                        <li>Digital account access</li>
+                        <li>Letter to loved ones</li>
+                        <li>Charitable wishes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Get Started in Minutes</h2>
+                <p>Simple setup, immediate peace of mind.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Create Account</h3>
+                    <p>Sign up free in 30 seconds. No credit card required.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Add Documents</h3>
+                    <p>Upload photos, PDFs, or paste information.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Invite Family</h3>
+                    <p>Share access with siblings or caregivers.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Rest Easy</h3>
+                    <p>Everything organized and ready when needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Trusted by Families Like Yours</h2>
+                <p>See why thousands of caregivers rely on MomDoc.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-content">"When Dad had his stroke, I was able to pull up his medication list and insurance info from my phone in the ambulance. MomDoc literally saved us hours of panic."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">JM</div>
+                        <div class="testimonial-info">
+                            <h4>Jennifer M.</h4>
+                            <p>Caring for father, 78</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-content">"My three siblings and I live in different states. MomDoc lets us all stay on the same page about Mom's care without endless group texts and email chains."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">RK</div>
+                        <div class="testimonial-info">
+                            <h4>Robert K.</h4>
+                            <p>Caring for mother, 82</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-content">"After we lost Mom suddenly, having all her wishes documented in MomDoc made an impossible time just a little bit easier. I wish every family had this."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SL</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah L.</h4>
+                            <p>Lost mother at 71</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="security">
+        <div class="section-container">
+            <div class="security-grid">
+                <div class="security-content">
+                    <h2>Your Family's Information, Protected</h2>
+                    <p>We know you're trusting us with sensitive information. That's why we use the same security measures as major banks and hospitals.</p>
+                    <div class="security-features">
+                        <div class="security-feature">
+                            <div class="security-feature-icon">🔐</div>
+                            <div>
+                                <h4>256-bit AES Encryption</h4>
+                                <p>Military-grade encryption for all stored documents</p>
+                            </div>
+                        </div>
+                        <div class="security-feature">
+                            <div class="security-feature-icon">🏥</div>
+                            <div>
+                                <h4>HIPAA Compliant</h4>
+                                <p>Meets all healthcare privacy requirements</p>
+                            </div>
+                        </div>
+                        <div class="security-feature">
+                            <div class="security-feature-icon">🔑</div>
+                            <div>
+                                <h4>Two-Factor Authentication</h4>
+                                <p>Extra layer of protection for your account</p>
+                            </div>
+                        </div>
+                        <div class="security-feature">
+                            <div class="security-feature-icon">🌐</div>
+                            <div>
+                                <h4>Secure Cloud Backup</h4>
+                                <p>Your documents are safe even if your phone is lost</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="security-visual">
+                    <div class="security-badge">
+                        <div class="security-badge-icon">🛡️</div>
+                        <h3>Bank-Level Security</h3>
+                        <p>Your data is always protected</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Simple, Affordable Pricing</h2>
+                <p>Start free. Upgrade when you're ready.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Free</h3>
+                    <div class="price">$0<span>/month</span></div>
+                    <p class="description">Perfect for getting started</p>
+                    <ul class="pricing-features">
+                        <li>1 family member profile</li>
+                        <li>Up to 25 documents</li>
+                        <li>Photo & PDF upload</li>
+                        <li>Basic organization</li>
+                        <li>Mobile app access</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Start Free</a>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Family</h3>
+                    <div class="price">$9<span>/month</span></div>
+                    <p class="description">For families managing parent care</p>
+                    <ul class="pricing-features">
+                        <li>Up to 4 family member profiles</li>
+                        <li>Unlimited documents</li>
+                        <li>All upload methods</li>
+                        <li>Family sharing (5 users)</li>
+                        <li>Expiration reminders</li>
+                        <li>Priority support</li>
+                        <li>Document templates</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">Start Free Trial</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Got questions? We've got answers.</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item active">
+                    <button class="faq-question">
+                        Is my family's information really secure?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely. We use 256-bit AES encryption (the same used by banks), are fully HIPAA compliant, and never sell or share your data. Your documents are encrypted both in transit and at rest. We also offer two-factor authentication for additional security.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Can I share access with my siblings?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! Our Family plan allows you to invite up to 5 family members to view and manage documents together. You control permissions — choose who can view, edit, or just see certain categories of documents.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What happens to my data if I cancel?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You can export all your documents anytime. If you cancel, we keep your data for 90 days in case you change your mind. After that, it's permanently deleted from our servers. You'll always have the option to download everything first.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Can I access MomDoc offline?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our mobile app allows you to mark important documents for offline access. This is especially useful for medical emergencies when you might not have reliable internet. Documents sync automatically when you're back online.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What if my parent isn't tech-savvy?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>That's exactly why we built MomDoc! You can manage everything on behalf of your parent. They don't need to use the app at all — you simply gather and upload their documents. If they want to be involved, our interface is designed to be simple and intuitive for users of all ages.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="section-container">
+            <h2>Don't Wait for an Emergency</h2>
+            <p>Start organizing your parents' important documents today. It takes just minutes to set up, and your future self will thank you.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn btn-secondary btn-large">Start Organizing Free →</a>
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8;">No credit card required • Free forever plan available</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">📋</div>
+                        MomDoc
+                    </div>
+                    <p>Helping families organize and protect the documents that matter most. Built with love by caregivers, for caregivers.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <a href="#">Features</a>
+                    <a href="#">Pricing</a>
+                    <a href="#">Mobile App</a>
+                    <a href="#">Security</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <a href="#">Caregiver Guide</a>
+                    <a href="#">Document Checklist</a>
+                    <a href="#">Help Center</a>
+                    <a href="#">Blog</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MomDoc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const isActive = faqItem.classList.contains('active');
+
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navigation background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
